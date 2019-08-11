@@ -1,0 +1,95 @@
+{% extends 'bootstrap/base.html' %}
+​
+{% block title %} {{ logs_dir }} {% endblock %}
+{% block scripts %}
+    {{ super() }}
+    <script>
+        (function ($) {
+            //插件
+            $.extend($, {
+                //命名空间
+                sortTable: {
+                    sort: function (tableId, Idx) {
+                        var table = document.getElementById(tableId);
+                        var tbody = table.tBodies[0];
+                        var tr = tbody.rows;
+
+                        var trValue = new Array();
+                        for (var i = 0; i < tr.length; i++) {
+                            trValue[i] = tr[i];  //将表格中各行的信息存储在新建的数组中
+                        }
+
+                        if (tbody.sortCol == Idx) {
+                            trValue.reverse(); //如果该列已经进行排序过了，则直接对其反序排列
+                        } else {
+                            //trValue.sort(compareTrs(Idx));  //进行排序
+                            trValue.sort(function (tr1, tr2) {
+                                var value1 = tr1.cells[Idx].innerHTML;
+                                var value2 = tr2.cells[Idx].innerHTML;
+                                return value1.localeCompare(value2);
+                            });
+                        }
+
+                        var fragment = document.createDocumentFragment();  //新建一个代码片段，用于保存排序后的结果
+                        for (var i = 0; i < trValue.length; i++) {
+                            fragment.appendChild(trValue[i]);
+                        }
+
+                        tbody.appendChild(fragment); //将排序的结果替换掉之前的值
+                        tbody.sortCol = Idx;
+                    }
+                }
+            });
+        })(jQuery);
+    </script>
+{% endblock %}
+
+{% block content %}
+      
+    <div class="container" style="width: 80%">
+        <span class="label label-default">常用文件夹</span>
+        <a class="label label-primary" href="{{url_for('index',logs_dir='pythonlogs/')}}" target="_blank">pythonlogs/</a>
+        <a class="label label-primary" href="{{url_for('index',logs_dir='data/supervisorout')}}" target="_blank">data/supervisorout/</a>
+        <table class="table" id="table1">
+            {#  <caption> / {{ logs_dir }} 的文件浏览</caption> #}
+            <caption>  {% for dir_item in format_logs_dir_to_multi(logs_dir)|reverse %}
+                /<a href="{{ dir_item.url }}" >  {{ dir_item.dir_name }}</a>
+            {% endfor %}
+                &nbsp;的文件浏览
+            </caption>
+            <thead>
+            <tr>
+                <th onclick="$.sortTable.sort('table1',0)">
+                    <button>名称</button>
+                </th>
+                <th onclick="$.sortTable.sort('table1',1)">
+                    <button>最后修改时间</button>
+                </th>
+                <th onclick="$.sortTable.sort('table1',2)">
+                    <button>文件大小</button>
+                </th>
+                <th>下载文件</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for ele in ele_list %}
+                {% if ele.is_dir %}
+                    <tr class="warning">
+                        {% else %}
+                    <tr class="success">
+                {% endif %}
+
+            <td><a href="{{ ele.url }}" >{{ ele.fullname | file_filter(2) }}</a></td>
+            <td>{{ ele.last_modify_time }}</td>
+            <td>{{ ele.filesize }} M</td>
+            <td><a href="{{ ele.download_url }}" download={{ ele.fullname | file_filter(2) }}>下载 {{ ele.fullname | file_filter(2) }}</a></td>
+            </tr>
+            {% endfor %}
+
+            </tbody>
+        </table>
+
+
+    </div>
+{% endblock %}
+

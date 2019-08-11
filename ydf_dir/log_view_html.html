@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>查看 {{ fullname|  file_filter(2) }} </title>
+    <script type="text/javascript" src="http://libs.baidu.com/jquery/2.1.1/jquery.min.js">
+    </script>
+</head>
+<style>
+    .page {
+        background-color: #000000;
+        color: #FFFFFF;
+    }
+</style>
+<body class="page">
+
+<div id="result"></div>
+<hr>
+<button onclick="toggle_scroll()"> 自动滚动浏览器滚动条</button>
+&nbsp;
+<div style="display: inline" id="auto_scroll_stat">ON</div>
+<button id="runButton" style="margin-left:300px" onclick="startOrStop()"> 运行中</button>
+<button style="margin-left:300px"><a href="{{ url_for('download_file',fullname=fullname) }}" download={{ fullname|  file_filter(2) }}>下载 {{ fullname|  file_filter(2) }} </a></button>
+<script>
+    var autoscroll = "ON";
+    toggle_scroll = function () {
+        if (autoscroll === "ON") autoscroll = "OFF";
+        else autoscroll = "ON";
+    };
+    var position = 0;
+
+    get_log = function () {
+        $.ajax({
+            url: "{{  url_for('info',fullname=fullname) }}", data: {"position": position}, success: function (result) {
+                console.debug(4444);
+                var resultObj = result;
+                console.debug(6666);
+                //var html = document.getElementById("div_id").innerHTML;
+                var resultEle = $("#result");
+                var html = resultEle.html();
+                var htmlShort = html.substr(-50000);
+                console.debug(htmlShort);
+                document.getElementById("result").innerHTML = htmlShort;
+                console.debug(resultEle.html());
+                resultEle.append(resultObj.content_text);
+                console.debug(resultObj.position);
+                position = resultObj.position;
+                if (autoscroll === "ON") {
+                    window.scrollTo(0, document.body.scrollHeight);
+                }
+                $("#auto_scroll_stat").text(autoscroll);
+            }
+        });
+    };
+    iid = setInterval(get_log, {{ config.REFRESH_MSEC }});
+    runStatus = 1;
+
+    function startRun() {
+        $("#runButton").text("运行中");
+        iid = setInterval(get_log, {{ config.REFRESH_MSEC }});
+        runStatus = 1;
+    }
+
+    function stopRun() {
+        $("#runButton").text("暂停了");
+        clearInterval(iid);
+        runStatus = 0;
+    }
+
+    function startOrStop() {
+        if (runStatus === 1) {
+            stopRun();
+        } else {
+            startRun();
+        }
+    }
+</script>
+
+
+</body>
+</html>
