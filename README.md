@@ -14,7 +14,7 @@ gunicorn -w 9 -k gevent --bind 0.0.0.0:8888 log_to_web:app
 如果是点击文件，尝试以文本格式读取文件，并以实时更新的方式显示到浏览器日志控制台并加彩。 
 主要是要做到不遗漏推送日志和不重复推送日志，采用的是python 操作文件的seek和tell。
 
- ~~~
+ ~~~ 
 
 #### 浏览系统目录和下载文件的页面
 
@@ -23,3 +23,4 @@ gunicorn -w 9 -k gevent --bind 0.0.0.0:8888 log_to_web:app
 #### 查看实时日志更新的页面，提供了暂停功能和自动下拉功能。把日志根据级别加了彩色，
 #### 更容易观察哪些是严重的，哪些是debug的。
 ![Image text](https://i.niupic.com/images/2019/08/11/_119.png)
+
