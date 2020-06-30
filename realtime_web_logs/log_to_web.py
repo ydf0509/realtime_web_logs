@@ -3,10 +3,11 @@
 # @Time    : 2019/6/14 17:33
 import os
 from pathlib import Path
-from flask import Flask, send_from_directory, url_for, jsonify, request, render_template, current_app, abort, g, send_file, redirect
+from flask import Flask, send_from_directory, url_for, jsonify, request, render_template, current_app, abort, g, \
+    send_file, redirect
 from flask_httpauth import HTTPBasicAuth
 from flask_bootstrap import Bootstrap
-from  function_scheduling_distributed_framework.utils import LogManager, nb_print, time_util
+from function_scheduling_distributed_framework.utils import LogManager, nb_print, time_util
 
 from tornado.wsgi import WSGIContainer
 from tornado.httpserver import HTTPServer
@@ -206,12 +207,17 @@ def index(logs_dir=''):
             current_app.logger.debug(url_for('download_file', fullname=fullname[0:]))
             # current_app.logger.debug(url_for('download_file', logs_dir='', filename='windows_to_linux_syn_config.json'))
             file_ele_list.append({'is_dir': 0, 'filesize': os.path.getsize(f) / 1000000,
-                                  'last_modify_time': time_util.DatetimeConverter(os.stat(str(fullname)).st_mtime).datetime_str,
-                                  'url': url_for('view', fullname=fullname[1:]), 'download_url': url_for('download_file', fullname=fullname[1:]), 'fullname': fullname})
+                                  'last_modify_time': time_util.DatetimeConverter(
+                                      os.stat(str(fullname)).st_mtime).datetime_str,
+                                  'url': url_for('view', fullname=fullname[1:]),
+                                  'download_url': url_for('download_file', fullname=fullname[1:]),
+                                  'fullname': fullname})
         if f.is_dir():
             fullname = str(f).replace('\\', '/')
             dir_ele_list.append({'is_dir': 1, 'filesize': 0,
-                                 'last_modify_time': time_util.DatetimeConverter(os.stat(str(f)).st_mtime).datetime_str, 'url': url_for('index', logs_dir=fullname[1:]), 'download_url': url_for('index', logs_dir=fullname[1:]), 'fullname': fullname})
+                                 'last_modify_time': time_util.DatetimeConverter(os.stat(str(f)).st_mtime).datetime_str,
+                                 'url': url_for('index', logs_dir=fullname[1:]),
+                                 'download_url': url_for('index', logs_dir=fullname[1:]), 'fullname': fullname})
 
     return render_template('dir_view.html', ele_list=dir_ele_list + file_ele_list, logs_dir=logs_dir)
 
@@ -249,7 +255,7 @@ def dir_processor():
 
 @auth.verify_password
 def verify_password(username, password):
-    if username == 'user' and password == 'mtfy123':
+    if (username == 'user' and password == 'mtfy123') or (username == 'admin' and password == 'pass123'):
         return True
     return False
 
@@ -260,10 +266,9 @@ def before_request():
     pass
 
 
-
 def main():
     print(app.url_map)
-    # app.run(host="0.0.0.0", port=9999, threaded=True, )
+    # app.run(host="0.0.0.0", port=9999,  )
     http_server = HTTPServer(WSGIContainer(app))
     http_server.listen(9999)
     IOLoop.instance().start()
@@ -271,5 +276,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-
