@@ -1,0 +1,7 @@
+README.md
+setup.py
+realtime_web_logs.egg-info/PKG-INFO
+realtime_web_logs.egg-info/SOURCES.txt
+realtime_web_logs.egg-info/dependency_links.txt
+realtime_web_logs.egg-info/requires.txt
+realtime_web_logs.egg-info/top_level.txt

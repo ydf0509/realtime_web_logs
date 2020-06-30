@@ -8,6 +8,10 @@ from flask_httpauth import HTTPBasicAuth
 from flask_bootstrap import Bootstrap
 from  function_scheduling_distributed_framework.utils import LogManager, nb_print, time_util
 
+from tornado.wsgi import WSGIContainer
+from tornado.httpserver import HTTPServer
+from tornado.ioloop import IOLoop
+
 print(str((Path(__file__).parent / Path('ydf_dir')).absolute()))
 app = Flask(__name__, template_folder=str((Path(__file__).parent / Path('ydf_dir')).absolute()))
 app.config['JSON_AS_ASCII'] = False
@@ -256,9 +260,16 @@ def before_request():
     pass
 
 
-if __name__ == "__main__":
-    # main()
-    print(app.url_map)
 
-    app.run(host="0.0.0.0", port=8889, threaded=True, )
+def main():
+    print(app.url_map)
+    # app.run(host="0.0.0.0", port=9999, threaded=True, )
+    http_server = HTTPServer(WSGIContainer(create_app()))
+    http_server.listen(FLASK_PORT)
+    IOLoop.instance().start()
+
+
+if __name__ == "__main__":
+    main()
+
 
