@@ -264,8 +264,8 @@ def before_request():
 def main():
     print(app.url_map)
     # app.run(host="0.0.0.0", port=9999, threaded=True, )
-    http_server = HTTPServer(WSGIContainer(create_app()))
-    http_server.listen(FLASK_PORT)
+    http_server = HTTPServer(WSGIContainer(app))
+    http_server.listen(9999)
     IOLoop.instance().start()
 
 

@@ -1,1 +1,3 @@
 function_scheduling_distributed_framework
+flask_httpauth
+flask_bootstrap

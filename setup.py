@@ -11,7 +11,7 @@ print(filepath)
 
 setup(
     name='realtime_web_logs',  #
-    version="0.4",
+    version="1.5",
     description=(
         'flask files manage,realtime flush logs'),
     keywords=("realtime_web_logs", 'flask',),
@@ -24,7 +24,8 @@ setup(
     maintainer='ydf',
     maintainer_email='xxx@sohu.com',
     license='BSD License',
-    packages=find_packages(),
+    # packages=find_packages(),
+    packages=['realtime_web_logs',],
     include_package_data=True,
     platforms=["all"],
     url='',
@@ -40,17 +41,21 @@ setup(
     ],
     install_requires=[
         'function_scheduling_distributed_framework',
+        'flask_httpauth',
+        'flask_bootstrap',
     ],
     entry_points={
-        # 'console_scripts': ['rwl=realtime_web_logs.log_to_web:main']
+        'console_scripts': ['rwl=realtime_web_logs.log_to_web:main']
     }
 )
+
+print('恭喜安装完成啦。')
 """
 打包上传
 python setup.py sdist upload -r pypi
 
 
-python setup.py sdist & twine upload dist/realtime_web_logs-0.3.tar.gz
+python setup.py sdist & twine upload dist/realtime_web_logs-1.5.tar.gz
 twine upload dist/*
 
 

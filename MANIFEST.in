@@ -1,0 +1,2 @@
+include README.md
+include realtime_web_logs/ydf_dir/*

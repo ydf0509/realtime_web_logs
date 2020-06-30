@@ -1,7 +1,15 @@
+MANIFEST.in
 README.md
 setup.py
+realtime_web_logs/log_to_web.py
 realtime_web_logs.egg-info/PKG-INFO
 realtime_web_logs.egg-info/SOURCES.txt
 realtime_web_logs.egg-info/dependency_links.txt
+realtime_web_logs.egg-info/entry_points.txt
 realtime_web_logs.egg-info/requires.txt
 realtime_web_logs.egg-info/top_level.txt
+realtime_web_logs/ydf_dir/1108990-20190616205430643-668740134.png
+realtime_web_logs/ydf_dir/1108990-20190616205503461-1109122360.png
+realtime_web_logs/ydf_dir/dir_view.html
+realtime_web_logs/ydf_dir/log_favicon.ico
+realtime_web_logs/ydf_dir/log_view_html.html

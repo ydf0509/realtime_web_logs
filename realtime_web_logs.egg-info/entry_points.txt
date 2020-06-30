@@ -1,0 +1,3 @@
+[console_scripts]
+rwl = realtime_web_logs.log_to_web:main
+
