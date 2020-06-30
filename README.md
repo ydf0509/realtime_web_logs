@@ -1,8 +1,20 @@
 # realtime_web_logs
 文件日志实时显示到web页面。附带全系统硬盘的文件浏览下载功能。
 
-
+## 两种运行方式
+```
+1)拉取项目代码 
 gunicorn -w 9 -k gevent --bind 0.0.0.0:8888 log_to_web:app
+
+2) 使用命令行启动
+先 pip  install realtime_web_logs
+然后在命令行敲击   rwl  三个字母。
+
+在浏览器打开 9999端口，账号密码为 admin pass123，就嫩看到磁盘文件夹了。
+除了包括python -m http.server的功能以外，最主要是嫩渲染彩色日志并自动实时刷新。
+
+```
+
 ~~~
 看日志希望带有彩色，希望从浏览器上看到，不用连到机器上看。
 
