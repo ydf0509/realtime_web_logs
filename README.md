@@ -10,7 +10,7 @@ gunicorn -w 9 -k gevent --bind 0.0.0.0:8888 log_to_web:app
 先 pip  install realtime_web_logs
 然后在命令行敲击   rwl  三个字母。运行原理类似与django celery scrapy这种命令行。
 
-在浏览器打开 9999端口，账号密码为 admin pass123，就嫩看到磁盘文件夹了。
+在浏览器打开 127.0.0.1(ip):9999端口，账号密码为 admin pass123，就嫩看到磁盘文件夹了。
 除了包括python -m http.server的功能以外，最主要是嫩渲染彩色日志并自动实时刷新。
 
 ```
